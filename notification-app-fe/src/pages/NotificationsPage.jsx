@@ -16,7 +16,7 @@ import { NotificationFilter } from "../components/NotificationFilter";
 import { useNotifications } from "../hooks/useNotifications";
 
 export function NotificationsPage() {
-  const [filter, setFilter] = useState();
+  const [filter, setFilter] = useState("All");
   const [page, setPage] = useState("1");
 
   const { notifications, totalPages, loading, error } = useNotifications();
@@ -24,11 +24,12 @@ export function NotificationsPage() {
   const unreadCount = 2;
 
   const handleFilterChange = (newFilter) => {
-
+    setFilter(newFilter);
+    setPage(1);
   };
 
   const handlePageChange = (_, newPage) => {
-
+    setPage(String(newPage))
   };
 
   return (
@@ -48,7 +49,7 @@ export function NotificationsPage() {
         <NotificationFilter value={filter} onChange={handleFilterChange} />
       </Box>
 
-      {true && (
+      {loading && (
         <Box display="flex" justifyContent="center" py={6}>
           <CircularProgress />
         </Box>
@@ -58,23 +59,23 @@ export function NotificationsPage() {
         <Alert severity="error">Failed to load notifications: {error}</Alert>
       )}
 
-      {loading && !error && notifications.length == "0" && (
-        <Alert severity="info">Something message</Alert>
+      {!loading && !error && notifications.length == 0 && (
+        <Alert severity="info">No notifications found</Alert>
       )}
 
-      {loading && !error && notifications.length > 0 && (
+      {!loading && !error && notifications.length > 0 && (
         <Stack spacing={1.5}>
           {notifications.map((n) => (
-            <></>
+            <NotificationCard key={n.id} notification={n} />
           ))}
         </Stack>
       )}
 
-      {!loading && (
+      {!loading && !error && notifications.length > 0 && totalPages > 1 && (
         <Box display="flex" justifyContent="center" mt={4}>
           <Pagination
             count={totalPages}
-            page={page}
+            page={parseInt(page)}
             onChange={handlePageChange}
             color="primary"
             shape="rounded"

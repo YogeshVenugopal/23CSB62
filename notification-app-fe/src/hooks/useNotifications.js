@@ -42,5 +42,7 @@ export function useNotifications() {
 
   const totalPages = total > 0 ? Math.ceil(total / 10) : 0;
 
+  console.log(notifications, total, totalPages, loading, error);
+
   return { notifications, total, totalPages, loading, error };
 }

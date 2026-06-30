@@ -1,19 +1,18 @@
 import axios from 'axios'
 
+const authInstance = axios.create({
+  baseURL: 'http://4.224.186.213/evaluation-service/',
+  timeout: 10000
+})
+
 const axiosInstance = axios.create({
   baseURL: 'http://4.224.186.213/evaluation-service/',
   timeout: 10000
 })
 
 const getToken = async () => {
-  const storedToken = localStorage.getItem('accessToken')
-
-  if (storedToken) {
-    return storedToken
-  }
-
   try {
-    const response = await axiosInstance.post('auth', {
+    const response = await authInstance.post('auth', {
         email:'yogeshvenugopal_23csb62@kgkite.ac.in',
         name:'Yogesh venugopal R',
         rollNo:'23CSB62',
@@ -22,12 +21,7 @@ const getToken = async () => {
         clientSecret:'HnbJHFnCjTDfQcDg'
     })
 
-    const token = response.data?.accessToken || response.data?.access_token
-
-    if (token) {
-      localStorage.setItem('accessToken', token)
-    }
-
+    const token = response.data.access_token
     return token
   } catch (error) {
     console.error('Failed to get auth token:', error)
