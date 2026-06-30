@@ -34,7 +34,7 @@ export function NotificationsPage() {
 
   return (
     <Box sx={{ maxWidth: 720, mx: "auto", px: 2, py: 4 }}>
-      <Stack direction="row" alignItems="center" spacing={1.5} mb={3}>
+      <Stack direction="row" spacing={1.5} mb={3} style={{alignItems:"center"}}>
         <Badge badgeContent={unreadCount} color="primary" max={99}>
           <NotificationsIcon sx={{ fontSize: 28 }} />
         </Badge>
@@ -50,7 +50,7 @@ export function NotificationsPage() {
       </Box>
 
       {loading && (
-        <Box display="flex" justifyContent="center" py={6}>
+        <Box style={{display:'flex', justifyContent:'center'}} py={6}>
           <CircularProgress />
         </Box>
       )}
@@ -66,7 +66,7 @@ export function NotificationsPage() {
       {!loading && !error && notifications.length > 0 && (
         <Stack spacing={1.5}>
           {notifications.map((n) => (
-            <NotificationCard key={n.id} notification={n} />
+            <NotificationCard key={n.ID} notification={n} />
           ))}
         </Stack>
       )}
